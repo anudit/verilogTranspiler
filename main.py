@@ -1,5 +1,5 @@
 MOD_NAME = "main"
-boolexp = "~AD + ~CD + A~BD"
+boolexp = "~B~CD+A~CD+~AB~D+~ABC+A~BC + ~BCD~"
 
 verilog = ""
 mainVars = []
@@ -21,12 +21,10 @@ for ele in boolexpList:
     for exp in expStack:
         verilogGate +=  "," + str(exp)
     verilogGate += ");\n"
-    # print(verilogGate)
     verilog += verilogGate
     wCnt+=1
 
 mainVars = sorted(list(set(mainVars)))
-# print(mainVars)
 orGate = "\tor(o"
 for n in range(1, wCnt):
     orGate += ",w" + str(n)
@@ -54,5 +52,5 @@ for inp in range(len(mainVars)):
 moduleLine += "o);\n"
 inputLine += "\n"
 
-verilog = moduleLine + inputLine + wireLine + verilog + "endmodule"
+verilog = moduleLine + inputLine + wireLine + verilog + "endmodule\n"
 print(verilog)
