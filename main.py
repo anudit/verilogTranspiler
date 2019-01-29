@@ -103,18 +103,17 @@ print(t)
 
 with open("out.v", 'w+') as f:
     try:
-            f.write(verilog)
-            print("[SUCCESS] Verilog File Created")
+        f.write(verilog)
+        print("[SUCCESS] Verilog File Created")
     except :
         print("[ERROR] File IO Error")
 
-
-
-
 with open("out.txt", 'w+') as f:
     try:
-            f.write(nBoolRep+"\n")
-            f.write(str(t))
+            f.write(nBoolRep+"\n\n")
+            f.write(str(t)+"\n\n")
             print("[SUCCESS] Truth Table Created")
+            f.write(str(b.tree))
+            print("[SUCCESS] Logic Tree Created")
     except :
         print("[ERROR] File IO Error")
