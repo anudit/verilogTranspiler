@@ -1,28 +1,54 @@
+import tt
+
 MOD_NAME = "main"
-boolexp = "~B~CD+A~CD+~AB~D+~ABC+A~BC + ~BCD~"
+boolexp = "~B~CD+A~CD+~AB~D+~ABC+A~BC + ~BC~D"
 
 verilog = ""
 mainVars = []
+nBoolRep = ""
+nBoolRepLines = []
 boolexp = boolexp.replace(" ", "")
 boolexpList = boolexp.split('+')
 
 wCnt = 1;
 for ele in boolexpList:
+    
     expStack = []
-    for ind in range(len(ele)):
+    ind = 0
+    # Construct Expression Stack 
+    while (ind < len(ele)):
         if(ele[ind] == "~"):
             mainVars.append(ele[ind+1])
             expStack.append("~" + ele[ind+1] )
-            ind+=1
+            ind+=2
         elif(ele[ind].isalpha()):
             mainVars.append(ele[ind])
-            expStack.append(ele[ind] )
+            expStack.append(ele[ind])
+            ind+=1
+        # print(expStack)
+
+    # Change into new representation
+    nBoolRepLine = "("
+    for ind in range(len(expStack)):
+        if (ind == len(expStack)-1):
+            nBoolRepLine+=expStack[ind] + ") "
+        else:
+            nBoolRepLine+=expStack[ind] + " and "
+    nBoolRepLines.append(nBoolRepLine)
+    
+
     verilogGate = "\tand(" + "w" + str(wCnt)
     for exp in expStack:
         verilogGate +=  "," + str(exp)
     verilogGate += ");\n"
     verilog += verilogGate
     wCnt+=1
+
+for index in range(len(nBoolRepLines)):
+    if (index == len(nBoolRepLines)-1):
+        nBoolRep += nBoolRepLines[index]
+    else:
+        nBoolRep += nBoolRepLines[index] + "or "
 
 mainVars = sorted(list(set(mainVars)))
 orGate = "\tor(o"
@@ -53,4 +79,23 @@ moduleLine += "o);\n"
 inputLine += "\n"
 
 verilog = moduleLine + inputLine + wireLine + verilog + "endmodule\n"
+
+try:
+    b = tt.BooleanExpression(nBoolRep)
+except GrammarError as e:
+    print("Here's what happened:")
+    print(e.message)
+    print("Here's where it happened:")
+    print(e.expr_str)
+    print(' '*e.error_pos + '^')
+
+t = tt.TruthTable(b)
+
+print(nBoolRep+"\n")
 print(verilog)
+print(t)
+'''
+for inputs, result in t:
+    print(inputs)
+    print(result)
+'''
