@@ -1,4 +1,5 @@
 import tt
+import os
 
 MOD_NAME = "main"
 boolexp = "~B~CD+A~CD+~AB~D+~ABC+A~BC + ~BC~D"
@@ -7,10 +8,13 @@ verilog = ""
 mainVars = []
 nBoolRep = ""
 nBoolRepLines = []
+wCnt = 1;
+fName = "output.txt"
+
 boolexp = boolexp.replace(" ", "")
 boolexpList = boolexp.split('+')
 
-wCnt = 1;
+
 for ele in boolexpList:
     
     expStack = []
@@ -91,11 +95,26 @@ except GrammarError as e:
 
 t = tt.TruthTable(b)
 
+'''
 print(nBoolRep+"\n")
 print(verilog)
 print(t)
 '''
-for inputs, result in t:
-    print(inputs)
-    print(result)
-'''
+
+with open("out.v", 'w+') as f:
+    try:
+            f.write(verilog)
+            print("[SUCCESS] Verilog File Created")
+    except :
+        print("[ERROR] File IO Error")
+
+
+
+
+with open("out.txt", 'w+') as f:
+    try:
+            f.write(nBoolRep+"\n")
+            f.write(str(t))
+            print("[SUCCESS] Truth Table Created")
+    except :
+        print("[ERROR] File IO Error")
