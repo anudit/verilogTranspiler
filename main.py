@@ -1,5 +1,6 @@
 import tt
 import os
+from colorlogs import log
 
 MOD_NAME = "main"
 boolexp = "~B~CD+A~CD+~AB~D+~ABC+A~BC + ~BC~D"
@@ -104,16 +105,16 @@ print(t)
 with open("out.v", 'w+') as f:
     try:
         f.write(verilog)
-        print("[SUCCESS] Verilog File Created")
+        log("[SUCCESS] Verilog File Created")
     except :
-        print("[ERROR] File IO Error")
+        log("[ERROR] File IO Error", STYLE="ERROR")
 
 with open("out.txt", 'w+') as f:
     try:
             f.write(nBoolRep+"\n\n")
-            f.write(str(t)+"\n\n")
-            print("[SUCCESS] Truth Table Created")
+            f.write(str(t)+"\n\n")  
+            log("[SUCCESS] Truth Table Created")
             f.write(str(b.tree))
-            print("[SUCCESS] Logic Tree Created")
+            log("[SUCCESS] Logic Tree Created")
     except :
-        print("[ERROR] File IO Error")
+        log("[ERROR] File IO Error", STYLE="ERROR")
